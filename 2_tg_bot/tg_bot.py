@@ -1,4 +1,5 @@
 import logging
+import os
 
 import pandas as pd
 from aiogram import Bot, Dispatcher, executor, types
@@ -9,9 +10,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-# ============ !!! Секретный токен !!! ===============
-APP_TOKEN = ""
-# ====================================================
+APP_TOKEN = os.environ.get("APP_TOKEN")
 PATH_TO_TODO_TABLE = "todo_result/todo_list.csv"
 
 bot = Bot(token=APP_TOKEN)
