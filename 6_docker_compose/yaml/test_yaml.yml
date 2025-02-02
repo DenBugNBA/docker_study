@@ -1,0 +1,46 @@
+# 'name': 'Peter\nOlga\n'
+name: |
+  Peter
+  Olga
+
+# 'name2': 'Peter2 Olga2\n'
+name2: >
+  Peter2
+  Olga2
+
+# 'list': ['Peter', 'Olga']
+list:
+  - Peter
+  - Olga
+
+# 'users': [{'Peter': 32}, {'Olga': 24}]
+users:
+  - Peter: 32
+  - Olga: 24
+
+# 'names': [{'Peter': 32, 'Olga': 24}, {'Oleg': 32, 'Julia': 24}]
+names:
+  - Peter: 32
+    Olga: 24
+
+  - Oleg: 32
+    Julia: 24
+
+
+# якорь
+# 'junior': {'position': 'junior', 'salary': 55000}
+junior:
+  &junior
+  position: junior
+  salary: 55000
+
+# 'team': [{'backend': [{'Peter': {'position': 'junior', 'salary': 55000}}, {'Olga': {'position': 'junior', 'salary': 55000}}]}, 'frontend', 'devops']
+team:
+  - backend:
+      - Peter:
+#          ссылка на якорь
+           <<: *junior
+      - Olga:
+          <<: *junior
+  - frontend
+  - devops
