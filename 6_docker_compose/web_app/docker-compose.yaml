@@ -1,0 +1,63 @@
+services:
+  database:
+    image: database
+#    container_name: database
+    environment:
+      POSTGRES_DB: docker_app_db
+      POSTGRES_USER: docker_app
+      POSTGRES_PASSWORD: docker_app
+    volumes:
+      - todo_db:/var/lib/postgresql/data
+#    networks:
+#      - todo_net
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "docker_app"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+#    deploy:
+#      replicas: 3
+
+  backend:
+    image: backend
+#    container_name: backend
+    environment:
+      HOST: database
+      PORT: 5432
+      DB: docker_app_db
+      DB_USERNAME: docker_app
+      DB_PASSWORD: docker_app
+#    networks:
+#      - todo_net
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "localhost:8000/test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      database:
+        condition: service_healthy
+
+  nginx_serv:
+    image: nginx_serv
+#    container_name: frontend
+#    networks:
+#      - todo_net
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      database:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+
+volumes:
+  todo_db:
+#    name: todo_db
+
+#networks:
+#  todo_net:
+#    name: todo_net
